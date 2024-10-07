@@ -6,7 +6,8 @@ const pizzas = [
     stock: 10,
     quantity: 0,
     price: 9.99,
-    image: "",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/apis-varias-mias.appspot.com/o/pizzeria%2Fpizza-1239077_640_cl.jpg?alt=media&token=6a9a33da-5c00-49d4-9080-784dcc87ec2c",
   },
   {
     id: 2,
@@ -15,7 +16,8 @@ const pizzas = [
     stock: 10,
     quantity: 0,
     price: 11.99,
-    image: "",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/apis-varias-mias.appspot.com/o/pizzeria%2Fpizza-1239077_640_cl.jpg?alt=media&token=6a9a33da-5c00-49d4-9080-784dcc87ec2c",
   },
   {
     id: 3,
@@ -24,7 +26,8 @@ const pizzas = [
     stock: 10,
     quantity: 0,
     price: 12.99,
-    image: "",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/apis-varias-mias.appspot.com/o/pizzeria%2Fpizza-1239077_640_cl.jpg?alt=media&token=6a9a33da-5c00-49d4-9080-784dcc87ec2c",
   },
   {
     id: 4,
@@ -33,7 +36,8 @@ const pizzas = [
     stock: 10,
     quantity: 0,
     price: 13.99,
-    image: "",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/apis-varias-mias.appspot.com/o/pizzeria%2Fpizza-1239077_640_cl.jpg?alt=media&token=6a9a33da-5c00-49d4-9080-784dcc87ec2c",
   },
   {
     id: 5,
@@ -42,7 +46,8 @@ const pizzas = [
     stock: 10,
     quantity: 0,
     price: 14.99,
-    image: "",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/apis-varias-mias.appspot.com/o/pizzeria%2Fpizza-1239077_640_cl.jpg?alt=media&token=6a9a33da-5c00-49d4-9080-784dcc87ec2c",
   },
   {
     id: 6,
@@ -51,6 +56,9 @@ const pizzas = [
     stock: 10,
     quantity: 0,
     price: 15.99,
-    image: "",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/apis-varias-mias.appspot.com/o/pizzeria%2Fpizza-1239077_640_cl.jpg?alt=media&token=6a9a33da-5c00-49d4-9080-784dcc87ec2c",
   },
 ];
+
+export default pizzas;
