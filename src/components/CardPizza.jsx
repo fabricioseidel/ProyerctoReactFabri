@@ -14,7 +14,15 @@ const CardPizza = ({ pizza, addToCart, removeFromCart }) => {
         <Card.Title>{pizza.name}</Card.Title>
         <Card.Text>Precio: ${pizza.price.toLocaleString("es-ES")}</Card.Text>
 
-        <Card.Text>🍕 Ingredientes: {pizza.ingredients.join(", ")}</Card.Text>
+        <Card.Text>
+          🍕 Ingredientes:{" "}
+          {pizza.ingredients.map((ingredient, index) => (
+            <span key={index}>
+              {ingredient}
+              {index < pizza.ingredients.length - 1 ? ", " : ""}
+            </span>
+          ))}
+        </Card.Text>
 
         <div className="d-flex justify-content-between mt-3">
           <Button variant="danger" onClick={() => removeFromCart(pizza.id)}>
