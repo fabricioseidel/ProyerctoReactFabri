@@ -7,6 +7,7 @@ const Pizza = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { id } = useParams();
+
   useEffect(() => {
     const fetchPizza = async () => {
       try {
@@ -29,11 +30,12 @@ const Pizza = () => {
   if (loading) return <Spinner animation="border" variant="primary" />;
   if (error) return <Alert variant="danger">{error}</Alert>;
   if (!pizza) return <p>No se encontró la pizza.</p>;
+
   return (
     <div className="container">
       <h1>{pizza.name}</h1>
       <img
-        src={pizza.image}
+        src={pizza.img}
         alt={`Imagen de ${pizza.name}`}
         className="pizza-img"
       />
@@ -44,10 +46,11 @@ const Pizza = () => {
           <li key={index}>{ingredient}</li>
         ))}
       </ul>
+      <p className="pizza-description">{pizza.desc}</p> // Usar 'desc' en lugar
+      de 'description'
       <Button variant="dark" className="pizza-btn">
         Añadir al carrito
-      </Button>{" "}
-      {/* Botón de Bootstrap */}
+      </Button>
     </div>
   );
 };

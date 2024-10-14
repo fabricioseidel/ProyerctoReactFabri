@@ -1,0 +1,33 @@
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-body {
+  flex: 1;
+}
+
+.card ul {
+  padding-left: 20px;
+}
+
+.card-title {
+  margin-bottom: 0.5rem;
+}
+
+.card-text {
+  margin-bottom: 0.5rem;
+}
+
+.btn-link {
+  margin-top: auto;
+}
+.modal-body p {
+  color: black;
+}

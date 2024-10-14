@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import "./App.css";
-import CardPizza from "./components/CardPizza";
+// import "./App.css";
+import Home from "./components/Home";
 import Cart from "./components/Cart";
 import pizzas from "./components/Pizzas";
 import Navbar from "./components/Navbar";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Register from "./components/Register";
-import Login from "./components/Login";
 
 const App = () => {
   const [cart, setCart] = useState([]);
@@ -59,19 +57,7 @@ const App = () => {
       <Header />
       <div className="container">
         <div className="row">
-          {pizzas.length > 0 ? (
-            pizzas.map((pizza) => (
-              <div key={pizza.id} className="col-md-4 mb-4">
-                <CardPizza
-                  pizza={pizza}
-                  addToCart={addToCart}
-                  removeFromCart={removeFromCart}
-                />
-              </div>
-            ))
-          ) : (
-            <p>No hay pizzas disponibles.</p>
-          )}
+          <Home addToCart={addToCart} removeFromCart={removeFromCart} />
         </div>
       </div>
 
@@ -81,8 +67,6 @@ const App = () => {
         decrementQuantity={removeFromCart}
       />
       <Footer />
-      <Register />
-      <Login />
     </>
   );
 };
