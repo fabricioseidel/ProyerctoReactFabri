@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Card, Col, Row, Spinner, Modal, Button } from "react-bootstrap";
+import { Card, Col, Row, Button, Modal } from "react-bootstrap";
 import "./Home.css";
 
-const Home = () => {
+const Home = ({ addToCart, removeFromCart, cart }) => {
   const [pizzas, setPizzas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -36,15 +36,18 @@ const Home = () => {
   };
 
   if (loading) {
-    return <Spinner animation="border" variant="primary" />;
+    return <p>Cargando pizzas...</p>;
   }
   if (error) {
     return <p>Ocurrió un error: {error}</p>;
   }
 
+  const totalAmount = cart.reduce((total, item) => total + item.totalPrice, 0);
+
   return (
     <div className="container mt-4">
       <h1>Pizzas disponibles</h1>
+
       <Row xs={1} md={2} lg={3} className="g-4">
         {pizzas.map((pizza) => (
           <Col key={pizza.id}>
@@ -53,18 +56,56 @@ const Home = () => {
               <Card.Body>
                 <Card.Title>{pizza.name}</Card.Title>
                 <Card.Text>Precio: ${pizza.price}</Card.Text>
-                <button className="btn btn-dark mt-2">Añadir al carrito</button>
-                <button
-                  className="btn btn-link p-0"
+
+                <Button
+                  className="btn btn-dark mt-2"
+                  onClick={() => addToCart(pizza)}
+                >
+                  Añadir al carrito
+                </Button>
+
+                <Button
+                  className="btn btn-danger mt-2"
+                  onClick={() => removeFromCart(pizza.id)}
+                >
+                  Eliminar del carrito
+                </Button>
+
+                <Button
+                  className="btn btn-link p-0 mt-2"
                   onClick={() => handleShow(pizza)}
                 >
                   Ver más
-                </button>
+                </Button>
               </Card.Body>
             </Card>
           </Col>
         ))}
       </Row>
+
+      <div className="mt-4">
+        <h2>Carrito de Compras</h2>
+        {cart.length > 0 ? (
+          <>
+            <ul className="list-group">
+              {cart.map((item) => (
+                <li
+                  key={item.id}
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  {item.name} - {item.quantity} unidad(es) - Total: $
+                  {item.totalPrice.toLocaleString("es-ES")}
+                </li>
+              ))}
+            </ul>
+            <h4 className="mt-4">
+              Total del carrito: ${totalAmount.toLocaleString("es-ES")}
+            </h4>
+          </>
+        ) : (
+          <p>Tu carrito está vacío.</p>
+        )}
+      </div>
 
       <Modal show={!!selectedPizza} onHide={handleClose}>
         <Modal.Header closeButton>

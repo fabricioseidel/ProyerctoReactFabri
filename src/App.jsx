@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-// import "./App.css";
+import "./App.css";
 import Home from "./components/Home";
-import Cart from "./components/Cart";
-import pizzas from "./components/Pizzas";
 import Navbar from "./components/Navbar";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -10,62 +8,60 @@ import Footer from "./components/Footer";
 const App = () => {
   const [cart, setCart] = useState([]);
 
-  const addToCart = (pizzaId) => {
+  const addToCart = (pizza) => {
     setCart((prevCart) => {
-      const pizzaInCart = prevCart.find((pizza) => pizza.id === pizzaId);
+      const pizzaInCart = prevCart.find((item) => item.id === pizza.id);
+
       if (pizzaInCart) {
-        return prevCart.map((pizza) =>
-          pizza.id === pizzaId
-            ? { ...pizza, quantity: pizza.quantity + 1 }
-            : pizza
+        return prevCart.map((item) =>
+          item.id === pizza.id
+            ? {
+                ...item,
+                quantity: item.quantity + 1,
+                totalPrice: item.price * (item.quantity + 1),
+              }
+            : item
         );
       } else {
-        const pizzaToAdd = pizzas.find((pizza) => pizza.id === pizzaId);
-        return pizzaToAdd
-          ? [...prevCart, { ...pizzaToAdd, quantity: 1 }]
-          : prevCart;
+        return [
+          ...prevCart,
+          { ...pizza, quantity: 1, totalPrice: pizza.price },
+        ];
       }
     });
   };
 
   const removeFromCart = (pizzaId) => {
     setCart((prevCart) => {
-      const pizzaInCart = prevCart.find((pizza) => pizza.id === pizzaId);
-      if (pizzaInCart) {
-        if (pizzaInCart.quantity === 1) {
-          return prevCart.filter((pizza) => pizza.id !== pizzaId);
-        } else {
-          return prevCart.map((pizza) =>
-            pizza.id === pizzaId
-              ? { ...pizza, quantity: pizza.quantity - 1 }
-              : pizza
-          );
-        }
+      const pizzaInCart = prevCart.find((item) => item.id === pizzaId);
+
+      if (pizzaInCart.quantity === 1) {
+        return prevCart.filter((item) => item.id !== pizzaId);
+      } else {
+        return prevCart.map((item) =>
+          item.id === pizzaId
+            ? {
+                ...item,
+                quantity: item.quantity - 1,
+                totalPrice: item.price * (item.quantity - 1),
+              }
+            : item
+        );
       }
-      return prevCart;
     });
   };
 
-  const totalAmount = cart.reduce(
-    (total, pizza) => total + pizza.price * pizza.quantity,
-    0
-  );
-
   return (
     <>
-      <Navbar totalAmount={totalAmount} />
+      <Navbar />
       <Header />
       <div className="container">
-        <div className="row">
-          <Home addToCart={addToCart} removeFromCart={removeFromCart} />
-        </div>
+        <Home
+          addToCart={addToCart}
+          removeFromCart={removeFromCart}
+          cart={cart}
+        />
       </div>
-
-      <Cart
-        cart={cart}
-        incrementQuantity={addToCart}
-        decrementQuantity={removeFromCart}
-      />
       <Footer />
     </>
   );

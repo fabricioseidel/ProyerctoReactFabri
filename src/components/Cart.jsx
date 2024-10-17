@@ -12,7 +12,7 @@ const Cart = ({ cart, incrementQuantity, decrementQuantity }) => {
         cart.map((item) => (
           <div key={item.id} className="row mb-4 p-3 border rounded cart-item">
             <div className="col-md-3">
-              <img src={item.image} alt={item.name} className="img-fluid" />
+              <img src={item.img} alt={item.name} className="img-fluid" />
             </div>
             <div className="col-md-6 d-flex flex-column justify-content-between">
               <div>
@@ -32,6 +32,7 @@ const Cart = ({ cart, incrementQuantity, decrementQuantity }) => {
                 >
                   +
                 </button>
+
                 <button
                   onClick={() => decrementQuantity(item.id)}
                   className="btn btn-secondary"
