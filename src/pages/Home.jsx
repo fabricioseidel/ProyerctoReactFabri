@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, Col, Row, Button, Modal } from "react-bootstrap";
-import "./Home.css";
+import "./../components/Home.css";
 
 const Home = ({ addToCart, removeFromCart, cart }) => {
   const [pizzas, setPizzas] = useState([]);
