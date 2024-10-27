@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Card, Col, Row, Button, Modal } from "react-bootstrap";
+import { useCart } from "../Context/CartContex";
 import "./../components/Home.css";
 
-const Home = ({ addToCart, removeFromCart, cart }) => {
+const Home = () => {
+  const { cart, addToCart, removeFromCart } = useCart();
   const [pizzas, setPizzas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -65,13 +67,6 @@ const Home = ({ addToCart, removeFromCart, cart }) => {
                 </Button>
 
                 <Button
-                  className="btn btn-danger mt-2"
-                  onClick={() => removeFromCart(pizza.id)}
-                >
-                  Eliminar del carrito
-                </Button>
-
-                <Button
                   className="btn btn-link p-0 mt-2"
                   onClick={() => handleShow(pizza)}
                 >
@@ -82,30 +77,6 @@ const Home = ({ addToCart, removeFromCart, cart }) => {
           </Col>
         ))}
       </Row>
-
-      <div className="mt-4">
-        <h2>Carrito de Compras</h2>
-        {cart.length > 0 ? (
-          <>
-            <ul className="list-group">
-              {cart.map((item) => (
-                <li
-                  key={item.id}
-                  className="list-group-item d-flex justify-content-between align-items-center"
-                >
-                  {item.name} - {item.quantity} unidad(es) - Total: $
-                  {item.totalPrice.toLocaleString("es-ES")}
-                </li>
-              ))}
-            </ul>
-            <h4 className="mt-4">
-              Total del carrito: ${totalAmount.toLocaleString("es-ES")}
-            </h4>
-          </>
-        ) : (
-          <p>Tu carrito está vacío.</p>
-        )}
-      </div>
 
       <Modal show={!!selectedPizza} onHide={handleClose}>
         <Modal.Header closeButton>

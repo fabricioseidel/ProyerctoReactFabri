@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useCart } from "../Context/CartContex";
 import {
   FaHome,
   FaUser,
@@ -8,7 +9,10 @@ import {
   FaShoppingCart,
 } from "react-icons/fa";
 
-const NavbarComponent = ({ totalAmount, user, onLogout }) => {
+const NavbarComponent = ({ user, onLogout }) => {
+  const { calculateTotal } = useCart();
+  const totalAmount = calculateTotal();
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
@@ -65,7 +69,9 @@ const NavbarComponent = ({ totalAmount, user, onLogout }) => {
           </div>
           <div className="navbar-nav ms-auto">
             <Link className="nav-link btn btn-outline-success" to="/cart">
-              <FaShoppingCart /> 🛒 Total: ${totalAmount.toLocaleString()}
+              <FaShoppingCart /> 🛒 Total: $
+              {totalAmount.toLocaleString() || "0"}{" "}
+              <button className="btn btn-primary">Pagar</button>
             </Link>
           </div>
         </div>

@@ -1,9 +1,9 @@
 import React from "react";
+import { useCart } from "../Context/CartContex";
 
-const Cart = ({ cart, incrementQuantity, decrementQuantity }) => {
-  const calculateTotal = () => {
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
-  };
+const Cart = () => {
+  const { cart, addToCart, removeFromCart, calculateTotal } = useCart();
+  const total = calculateTotal();
 
   return (
     <div className="container mt-4">
@@ -15,49 +15,35 @@ const Cart = ({ cart, incrementQuantity, decrementQuantity }) => {
               <img src={item.img} alt={item.name} className="img-fluid" />
             </div>
             <div className="col-md-6 d-flex flex-column justify-content-between">
-              <div>
-                <h5>{item.name}</h5>
-                <p>Cantidad: {item.quantity}</p>
-                <p>Precio: ${item.price.toLocaleString("es-ES")}</p>
-                <p>
-                  Total: ${(item.price * item.quantity).toLocaleString("es-ES")}
-                </p>
-              </div>
+              <h5>{item.name}</h5>
+              <p>Cantidad: {item.quantity}</p>
+              <p>Precio: ${item.price.toLocaleString("es-ES")}</p>
+              <p>
+                Total: ${(item.price * item.quantity).toLocaleString("es-ES")}
+              </p>
             </div>
             <div className="col-md-3 d-flex flex-column justify-content-between align-items-end">
-              <div>
-                <button
-                  onClick={() => incrementQuantity(item.id)}
-                  className="btn btn-primary me-2"
-                >
-                  +
-                </button>
-
-                <button
-                  onClick={() => decrementQuantity(item.id)}
-                  className="btn btn-secondary"
-                >
-                  -
-                </button>
-              </div>
-              <button className="btn btn-success mt-2">&#128179; Pagar</button>
+              <button
+                onClick={() => addToCart(item)}
+                className="btn btn-primary me-2"
+              >
+                Agregar
+              </button>
+              <button
+                onClick={() => removeFromCart(item.id)}
+                className="btn btn-danger"
+              >
+                Eliminar
+              </button>
             </div>
           </div>
         ))
       ) : (
-        <p className="text-center">Tu carrito está vacío</p>
+        <p>No tienes productos en tu carrito.</p>
       )}
-
-      {cart.length > 0 && (
-        <div className="mt-4 text-end">
-          <h4>
-            Total del carrito: ${calculateTotal().toLocaleString("es-ES")}
-          </h4>
-          <button className="btn btn-success btn-lg mt-3">
-            &#128179; Proceder al Pago
-          </button>
-        </div>
-      )}
+      <hr />
+      <h4>Total: ${calculateTotal().toLocaleString("es-ES")}</h4>
+      <button className="btn btn-primary">Pagar Total</button>
     </div>
   );
 };
