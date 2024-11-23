@@ -10,6 +10,8 @@ const Pizza = () => {
 
   useEffect(() => {
     const fetchPizza = async () => {
+      setLoading(true);
+      setError(null);
       try {
         const response = await fetch(`http://localhost:5001/api/pizzas/${id}`);
         if (!response.ok) {
@@ -46,9 +48,12 @@ const Pizza = () => {
           <li key={index}>{ingredient}</li>
         ))}
       </ul>
-      <p className="pizza-description">{pizza.desc}</p> // Usar 'desc' en lugar
-      de 'description'
-      <Button variant="dark" className="pizza-btn">
+      <p className="pizza-description">{pizza.desc}</p>
+      <Button
+        variant="dark"
+        className="pizza-btn"
+        onClick={() => agregarAlCarrito(pizza)}
+      >
         Añadir al carrito
       </Button>
     </div>

@@ -9,9 +9,10 @@ const Login = ({ onLogin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const authToken = "miToken123";
 
     if (email === "usuario@example.com" && password === "password") {
-      onLogin({ email });
+      onLogin({ email }, authToken);
       navigate("/profile");
     } else {
       setError("Email o contraseña incorrecta");

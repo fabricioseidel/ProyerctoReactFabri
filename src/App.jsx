@@ -1,5 +1,11 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "./Context/UserContext";
 import "./App.css";
 import Home from "./pages/Home";
 import Cart from "./pages/Cart";
@@ -13,43 +19,49 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { CartProvider } from "./Context/CartContex";
 
-const App = () => {
-  const [user, setUser] = useState(null);
-
-  const handleLogout = () => {
-    setUser(null);
+function App() {
+  const { user, token, logout, login } = useContext(UserContext);
+  const handleLogin = (userInfo, authToken) => {
+    login(userInfo, authToken);
   };
-
-  const handleLogin = (userData) => {
-    setUser(userData);
-  };
-
   return (
-    <Router>
-      <CartProvider>
-        <Navbar user={user} onLogout={handleLogout} />
-        <Header />
-
+    <CartProvider>
+      <Router>
+        <Navbar user={user} onLogout={logout} /> <Header />
         <div className="container">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login onLogin={handleLogin} />} />
-            <Route path="/cart" element={<Cart />} />
             <Route path="/pizza/:id" element={<Pizza />} />
+            <Route path="/cart" element={<Cart />} />
+
             <Route
               path="/profile"
-              element={<Profile user={user} onLogout={handleLogout} />}
+              element={
+                token ? (
+                  <Profile user={user} onLogout={logout} />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
             />
-            <Route path="/404" element={<NotFound />} />
+            <Route
+              path="/login"
+              element={
+                token ? <Navigate to="/" /> : <Login onLogin={handleLogin} />
+              }
+            />
+            <Route
+              path="/register"
+              element={token ? <Navigate to="/" /> : <Register />}
+            />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
-
-        <Footer />
-      </CartProvider>
-    </Router>
+        <Footer />{" "}
+      </Router>
+    </CartProvider>
   );
-};
+}
 
 export default App;

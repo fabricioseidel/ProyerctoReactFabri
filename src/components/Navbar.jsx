@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../Context/CartContex";
+import { UserContext } from "../Context/UserContext";
 import {
   FaHome,
   FaUser,
@@ -11,6 +12,7 @@ import {
 
 const NavbarComponent = ({ user, onLogout }) => {
   const { calculateTotal } = useCart();
+  const { token } = useContext(UserContext);
   const totalAmount = calculateTotal();
 
   return (

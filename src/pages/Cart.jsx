@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useCart } from "../Context/CartContex";
-
+import { UserContext } from "../Context/UserContext";
+import { useNavigate } from "react-router-dom";
 const Cart = () => {
   const { cart, addToCart, removeFromCart, calculateTotal } = useCart();
+  const { token } = useContext(UserContext);
+  const navigate = useNavigate();
   const total = calculateTotal();
-
+  const handlePayment = () => {
+    if (!token) {
+      navigate("/login");
+    } else {
+      console.log("Pagando...");
+    }
+  };
   return (
     <div className="container mt-4">
       <h2 className="mb-4">Tu Carrito</h2>
@@ -42,8 +51,22 @@ const Cart = () => {
         <p>No tienes productos en tu carrito.</p>
       )}
       <hr />
-      <h4>Total: ${calculateTotal().toLocaleString("es-ES")}</h4>
-      <button className="btn btn-primary">Pagar Total</button>
+      <h4>Total: ${total.toLocaleString("es-ES")}</h4>
+
+      {token ? (
+        <button className="btn btn-primary" onClick={handlePayment}>
+          Pagar Todo Todito
+        </button>
+      ) : (
+        <>
+          <button
+            className="btn btn-warning mt-3"
+            onClick={() => navigate("/login")}
+          >
+            Inicia sesión para proceder con el pago
+          </button>
+        </>
+      )}
     </div>
   );
 };

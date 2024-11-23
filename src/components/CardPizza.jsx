@@ -28,7 +28,7 @@ const CardPizza = ({ pizza, addToCart, removeFromCart }) => {
           <Button variant="danger" onClick={() => removeFromCart(pizza.id)}>
             🗑 Eliminar
           </Button>
-          <Button variant="dark" onClick={() => addToCart(pizza.id)}>
+          <Button variant="dark" onClick={() => addToCart(pizza)}>
             🛒 Añadir
           </Button>
         </div>
