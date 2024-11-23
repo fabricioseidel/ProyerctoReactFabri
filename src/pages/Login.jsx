@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../Context/UserContext";
 
-const Login = ({ onLogin }) => {
+const Login = () => {
+  const { login } = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const authToken = "miToken123";
-
-    if (email === "usuario@example.com" && password === "password") {
-      onLogin({ email }, authToken);
+    const result = await login(email, password);
+    if (result.success) {
       navigate("/profile");
     } else {
-      setError("Email o contraseña incorrecta");
+      setError(result.message);
     }
   };
 

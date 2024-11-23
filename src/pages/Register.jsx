@@ -1,70 +1,47 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../Context/UserContext";
 
 const Register = () => {
+  const { register } = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!email || !password || !confirmPassword) {
-      alert("Todos los campos son obligatorios.");
-      console.log("Todos los campos son obligatorios.");
-      return;
+    const result = await register(email, password);
+    if (result.success) {
+      navigate("/profile");
+    } else {
+      setError(result.message);
     }
-
-    if (password.length < 6) {
-      alert("La contraseña debe tener al menos 6 caracteres.");
-      console.log("La contraseña debe tener al menos 6 caracteres.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      alert("Las contraseñas no coinciden.");
-      console.log("Las contraseñas no coinciden.");
-      return;
-    }
-
-    alert("Contraseña válida.");
-    console.log("Contraseña válida.");
-
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
   };
 
   return (
-    <div>
-      <h2>Registrate</h2>
+    <div className="container mt-4">
+      <h2>Registro</h2>
+      {error && <p className="text-danger">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
+        <div className="mb-3">
+          <label>Email:</label>
           <input
             type="email"
-            id="email"
+            className="form-control"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </div>
-        <div>
-          <label htmlFor="password">Contraseña</label>
+        <div className="mb-3">
+          <label>Contraseña:</label>
           <input
             type="password"
-            id="password"
+            className="form-control"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
-          />
-        </div>
-        <div>
-          <label htmlFor="confirmPassword">Confirmar contraseña</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
           />
         </div>
         <button type="submit" className="btn btn-primary">

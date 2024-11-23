@@ -1,23 +1,86 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useCart } from "../Context/CartContex";
 import { UserContext } from "../Context/UserContext";
 import { useNavigate } from "react-router-dom";
+
 const Cart = () => {
-  const { cart, addToCart, removeFromCart, calculateTotal } = useCart();
+  const { cart, addToCart, removeFromCart, calculateTotal, clearCart } =
+    useCart();
   const { token } = useContext(UserContext);
   const navigate = useNavigate();
   const total = calculateTotal();
-  const handlePayment = () => {
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [paidTotal, setPaidTotal] = useState(0);
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
+
+  const handleRealPayment = async () => {
     if (!token) {
       navigate("/login");
-    } else {
-      console.log("Pagando...");
+      return;
+    }
+
+    try {
+      const cartData = cart.map((item) => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        totalPrice: item.totalPrice,
+      }));
+
+      const response = await fetch("/api/checkouts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          cart: cartData,
+          totalAmount: total,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setPaidTotal(total);
+        setPaymentSuccess(true);
+        setPaymentCompleted(true);
+        clearCart(total);
+      } else {
+        alert(
+          `Error en el pago: ${data.message || "Hubo un error inesperado."}`
+        );
+      }
+    } catch (error) {
+      console.error("Error al realizar el pago:", error);
+      alert("Hubo un problema con el proceso de pago.");
     }
   };
+
+  const handleSimulatedPayment = () => {
+    setPaidTotal(total);
+    setPaymentSuccess(true);
+    setPaymentCompleted(true);
+    clearCart(total);
+  };
+
   return (
     <div className="container mt-4">
       <h2 className="mb-4">Tu Carrito</h2>
-      {cart.length > 0 ? (
+
+      {paymentSuccess && (
+        <>
+          <div className="alert alert-success">Pago realizado con éxito</div>
+          <div className="alert alert-info mt-3">
+            Este es el total de tu boleta: ${paidTotal.toLocaleString("es-ES")}
+            <br />
+            <strong>¡GRACIAS, VUELVA PRONTO!</strong>
+          </div>
+        </>
+      )}
+
+      {!paymentSuccess && cart.length > 0 ? (
         cart.map((item) => (
           <div key={item.id} className="row mb-4 p-3 border rounded cart-item">
             <div className="col-md-3">
@@ -47,24 +110,34 @@ const Cart = () => {
             </div>
           </div>
         ))
-      ) : (
+      ) : !paymentSuccess ? (
         <p>No tienes productos en tu carrito.</p>
-      )}
-      <hr />
-      <h4>Total: ${total.toLocaleString("es-ES")}</h4>
+      ) : null}
 
-      {token ? (
-        <button className="btn btn-primary" onClick={handlePayment}>
-          Pagar Todo Todito
-        </button>
-      ) : (
+      {!paymentSuccess && (
         <>
-          <button
-            className="btn btn-warning mt-3"
-            onClick={() => navigate("/login")}
-          >
-            Inicia sesión para proceder con el pago
-          </button>
+          <hr />
+          <h4>Total: ${total.toLocaleString("es-ES")}</h4>
+          {token ? (
+            <>
+              <button className="btn btn-primary" onClick={handleRealPayment}>
+                Pago con consulta a la api
+              </button>
+              <button
+                className="btn btn-success mt-3"
+                onClick={handleSimulatedPayment}
+              >
+                Compra Siempre Aprobada
+              </button>
+            </>
+          ) : (
+            <button
+              className="btn btn-warning mt-3"
+              onClick={() => navigate("/login")}
+            >
+              Inicia sesión para proceder con el pago
+            </button>
+          )}
         </>
       )}
     </div>

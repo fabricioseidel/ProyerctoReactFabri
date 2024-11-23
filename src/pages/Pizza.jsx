@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Spinner, Alert, Button } from "react-bootstrap";
+import { Spinner, Alert, Button, Card, ListGroup } from "react-bootstrap";
 
 const Pizza = () => {
   const [pizza, setPizza] = useState(null);
@@ -34,28 +34,41 @@ const Pizza = () => {
   if (!pizza) return <p>No se encontró la pizza.</p>;
 
   return (
-    <div className="container">
-      <h1>{pizza.name}</h1>
-      <img
-        src={pizza.img}
-        alt={`Imagen de ${pizza.name}`}
-        className="pizza-img"
-      />
-      <p className="pizza-price">${pizza.price}</p>
-      <p>Ingredientes:</p>
-      <ul className="pizza-ingredients-list">
-        {pizza.ingredients.map((ingredient, index) => (
-          <li key={index}>{ingredient}</li>
-        ))}
-      </ul>
-      <p className="pizza-description">{pizza.desc}</p>
-      <Button
-        variant="dark"
-        className="pizza-btn"
-        onClick={() => agregarAlCarrito(pizza)}
-      >
-        Añadir al carrito
-      </Button>
+    <div className="container mt-1">
+      <Card className="shadow-sm">
+        <Card.Img
+          variant="top"
+          src={pizza.img}
+          alt={`Imagen de ${pizza.name}`}
+        />
+        <Card.Body>
+          <Card.Title className="text-center text-danger">
+            {pizza.name}
+          </Card.Title>
+          <Card.Text
+            className="text-center text-success"
+            style={{ fontSize: "1.5rem" }}
+          >
+            <strong>${pizza.price}</strong>
+          </Card.Text>
+          <ListGroup variant="flush">
+            <ListGroup.Item>
+              <strong>Ingredientes:</strong>
+              <ul>
+                {pizza.ingredients.map((ingredient, index) => (
+                  <li key={index}>{ingredient}</li>
+                ))}
+              </ul>
+            </ListGroup.Item>
+            <ListGroup.Item>{pizza.desc}</ListGroup.Item>
+          </ListGroup>
+        </Card.Body>
+        <Card.Footer className="d-flex justify-content-center">
+          <Button variant="dark" onClick={() => agregarAlCarrito(pizza)}>
+            Añadir al carrito
+          </Button>
+        </Card.Footer>
+      </Card>
     </div>
   );
 };

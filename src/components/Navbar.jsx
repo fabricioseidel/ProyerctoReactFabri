@@ -10,11 +10,10 @@ import {
   FaShoppingCart,
 } from "react-icons/fa";
 
-const NavbarComponent = ({ user, onLogout }) => {
+const NavbarComponent = () => {
   const { calculateTotal } = useCart();
-  const { token } = useContext(UserContext);
+  const { user, token, logout } = useContext(UserContext);
   const totalAmount = calculateTotal();
-
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
@@ -37,7 +36,7 @@ const NavbarComponent = ({ user, onLogout }) => {
             <Link className="nav-link btn btn-outline-success me-2" to="/">
               <FaHome /> Home
             </Link>
-            {user ? (
+            {token ? (
               <>
                 <Link
                   className="nav-link btn btn-outline-success me-2"
@@ -47,7 +46,7 @@ const NavbarComponent = ({ user, onLogout }) => {
                 </Link>
                 <button
                   className="nav-link btn btn-outline-success me-2"
-                  onClick={onLogout}
+                  onClick={logout}
                 >
                   <FaSignInAlt /> Logout
                 </button>
@@ -69,11 +68,11 @@ const NavbarComponent = ({ user, onLogout }) => {
               </>
             )}
           </div>
+
           <div className="navbar-nav ms-auto">
             <Link className="nav-link btn btn-outline-success" to="/cart">
               <FaShoppingCart /> 🛒 Total: $
-              {totalAmount.toLocaleString() || "0"}{" "}
-              <button className="btn btn-primary">Pagar</button>
+              {totalAmount.toLocaleString() || "0"}
             </Link>
           </div>
         </div>

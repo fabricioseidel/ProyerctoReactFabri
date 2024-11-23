@@ -6,7 +6,7 @@ function Header() {
         style={{
           height: "50vh",
           background:
-            "rgba(0, 0, 0, 0.5) url(https://cdn.pixabay.com/photo/2014/05/18/11/25/pizza-346985_1280.jpg) center/cover",
+            "rgba(0, 0, 0, 0.5) url(https://cdn.pixabay.com/photo/2017/12/10/14/47/pizza-3010062_1280.jpg) center/cover",
         }}
       >
         <div className="text-center ">
